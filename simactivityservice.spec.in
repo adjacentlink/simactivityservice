@@ -1,0 +1,116 @@
+%global __brp_check_rpaths %{nil}
+%define source_date_epoch_from_changelog 0
+
+Summary: Simulation Activity Service
+Name: simactivityservice
+Version: @VERSION@
+Release: 1%{?dist}
+License: BSD
+Group: Applications/System
+URL: http://adjacentlink.com
+Source0: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires: libxml2-devel
+BuildRequires: protobuf-devel
+BuildRequires: zeromq-devel
+BuildRequires: libuuid-devel
+BuildRequires: python3-devel
+
+Requires: libxml2
+Requires: protobuf
+Requires: zeromq
+Requires: libuuid
+
+Vendor: Adjacent Link LLC
+
+%description
+Simulation Activity Service
+
+%{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
+
+%package devel
+Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+
+Summary: Headers necessary to interface with the Simulation Activity Service
+
+Group: Development/Libraries
+
+%description devel
+Headers necessary to interface with the Simulation Activity Service
+
+%package -n python3-simactivityservice
+Requires: python3-setuptools
+Requires: python3-protobuf
+
+Summary: Simulation Activity Service Python modules and utilities
+
+Group: Development/Libraries
+BuildArch: noarch
+
+%description -n python3-simactivityservice
+Simulation Activity Servicee Python modules and utilities
+
+%prep
+%setup -q
+
+%build
+export CXXFLAGS="%{optflags} -O3 -Wall -Wextra"
+
+%configure
+make %{?_smp_mflags}
+
+%install
+make DESTDIR=${RPM_BUILD_ROOT} install
+%py3_shebang_fix %{buildroot}%{_bindir}/simactivityservice-surrogate-upstreamtime
+
+find ${RPM_BUILD_ROOT} -name '*.a' -exec rm '{}'  \;
+find ${RPM_BUILD_ROOT} -name '*.la' -exec rm '{}' \;
+mkdir -p ${RPM_BUILD_ROOT}%{_pkgdocdir}
+
+%if 0%{?_licensedir:1}
+mkdir -p ${RPM_BUILD_ROOT}%{_licensedir}/%{name}
+install -t ${RPM_BUILD_ROOT}%{_licensedir}/%{name} COPYING
+%endif
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
+
+%files
+%defattr(-, root, root)
+%{_bindir}/simactivityservice
+
+%doc %{_pkgdocdir}
+%if 0%{?_licensedir:1}
+%dir %{_licensedir}/%{name}
+%license %{_licensedir}/%{name}/COPYING
+%endif
+
+%files devel
+%defattr(-, root, root)
+%dir %{_includedir}/simactivityservice
+%{_includedir}/simactivityservice/*
+%{_libdir}/pkgconfig/*
+
+%doc %{_pkgdocdir}
+%if 0%{?_licensedir:1}
+%dir %{_licensedir}/%{name}
+%license %{_licensedir}/%{name}/COPYING
+%endif
+
+%files -n python3-simactivityservice
+%defattr(-,root,root,-)
+%{python3_sitelib}/simactivityservice
+%{python3_sitelib}/simactivityservice-*.egg-info
+%{_bindir}/simactivityservice-surrogate-upstreamtime
+
+%doc %{_pkgdocdir}
+%if 0%{?_licensedir:1}
+%dir %{_licensedir}/%{name}
+%license %{_licensedir}/%{name}/COPYING
+%endif

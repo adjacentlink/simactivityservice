@@ -1,0 +1,15 @@
+from setuptools import setup
+
+setup(name='simactivityservice',
+      version='@VERSION@',
+      description='Simulation Activity Service',
+      long_description='imulation Activity Service',
+      author='Adjacent Link',
+      author_email='emane at adjacent link dot com',
+      url="https://github.com/adjacentlink/simactivityservice",
+      packages=['simactivityservice',
+                'simactivityservice.interface',
+                'simactivityservice.upstreamtime'],
+      scripts=['scripts/simactivityservice-surrogate-upstreamtime'],
+      license = 'BSD'
+      )

@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+protodir=@includedir@/simactivityservice/proto
+
+Name: simactivityservice
+Description: Simulation Activity Service
+URL: http://adjacentlink.com
+Version: @VERSION@
+Cflags: -I${includedir}
+
