@@ -1,0 +1,46 @@
+Source: simactivityservice
+Section: net
+Priority: optional
+Maintainer: Adjacent Link LLC <emane@adjacentlink.com>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3,
+               python3-setuptools,
+               pkgconf,
+               protobuf-compiler,
+               libprotobuf-dev,
+               libzmq3-dev,
+               libxml2-dev,
+               uuid-dev
+Standards-Version: 4.6.2
+Homepage: https://github.com/adjacentlink/simactivityservice
+Rules-Requires-Root: no
+
+Package: simactivityservice
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Simulation Activity Service
+ The Simulation Activity Service (SAS) provides simulation experiment
+ time coordination using Google Protocol Buffers defined activity
+ messages exchanged via ZeroMQ PUB/SUB.
+
+Package: simactivityservice-dev
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}
+Description: Headers necessary to interface with the Simulation Activity Service
+ Topic definitions, protocol buffer message definitions and pkg-config
+ file for applications that interface with the Simulation Activity
+ Service.
+
+Package: python3-simactivityservice
+Architecture: all
+Section: python
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         python3-protobuf,
+         python3-zmq,
+         python3-daemon
+Description: Simulation Activity Service Python modules and utilities
+ Python modules for interfacing with the Simulation Activity Service
+ and the simactivityservice-surrogate-upstreamtime utility.

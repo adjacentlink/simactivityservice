@@ -51,3 +51,6 @@ simactivityservice-*.tar.gz
 # rpms
 simactivityservice.spec
 .rpmbuild
+
+# debs
+.debbuild

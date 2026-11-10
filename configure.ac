@@ -103,6 +103,10 @@ AM_PATH_PYTHON([3.6])
 AC_CHECK_PROG(HAVE_RPMBUILD, rpmbuild, true, false)
 AM_CONDITIONAL(HAVE_RPMBUILD,$HAVE_RPMBUILD)
 
+# check for dpkg-buildpackage
+AC_CHECK_PROG(HAVE_DEB, dpkg-buildpackage, true, false)
+AM_CONDITIONAL(HAVE_DEB,$HAVE_DEB)
+
 AC_CONFIG_FILES([Makefile
  include/Makefile
  include/simactivityservice/Makefile
