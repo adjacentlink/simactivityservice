@@ -18,16 +18,17 @@ RUN apt-get -y upgrade --no-install-recommends
 RUN apt-get -y install git gcc g++ autoconf automake libtool dh-python debhelper pkg-config python3-setuptools \
                        protobuf-compiler libprotobuf-dev python3-dev
 
-RUN git clone https://github.com/adjacentlink/openstatistic -b develop
-WORKDIR openstatistic
+RUN cd /opt && git clone https://github.com/adjacentlink/openstatistic -b develop
+WORKDIR /opt/openstatistic
 RUN ./autogen.sh && ./configure && make deb
 RUN cp $(find .debbuild -name "*\.deb") /opt/built
 RUN dpkg -i /opt/built/*; apt-get -y install -f
 
-# Build and install simactivityservice
+# build and install simactivityservice
 RUN apt-get -y install libxml2-dev uuid-dev libzmq3-dev
 
-WORKDIR simactivityservice
+RUN cd /opt && git clone https://github.com/adjacentlink/simactivityservice -b develop
+WORKDIR /opt/simactivityservice
 RUN ./autogen.sh && ./configure && make deb
 RUN cp $(find .debbuild -name "*\.deb") /opt/built
 RUN dpkg -i /opt/built/*\.deb; apt-get -y install -f
