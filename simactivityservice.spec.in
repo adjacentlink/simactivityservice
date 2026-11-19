@@ -29,7 +29,7 @@ Simulation Activity Service
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
 
 %package devel
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Requires: %{name}%{?_isa} = %{version}-%{release}
 
 Summary: Headers necessary to interface with the Simulation Activity Service
 
