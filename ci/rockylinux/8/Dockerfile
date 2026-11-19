@@ -1,0 +1,37 @@
+FROM rockylinux:8
+
+RUN mkdir -p /opt/built
+
+RUN dnf -y update
+RUN dnf -y install epel-release dnf-plugins-core
+RUN dnf config-manager --set-enabled powertools
+RUN dnf clean all
+
+
+
+
+
+
+
+# build and install openstatistic dependency
+RUN dnf -y install git gcc-c++ make autoconf automake libtool rpm-build python3-setuptools python3-devel protobuf-devel
+
+RUN git clone https://github.com/adjacentlink/openstatistic -b develop
+WORKDIR openstatistic
+RUN ./autogen.sh && ./configure && make rpm
+RUN cp $(find .rpmbuild/RPMS -name "*\.rpm") /opt/built
+RUN dnf -y install /opt/built/*
+
+# build and install simactivity service
+RUN dnf -y install libxml2-devel libuuid-devel zeromq-devel
+
+RUN git clone https://github.com/adjacentlink/simactivityservice -b develop
+WORKDIR simactivityservice
+RUN ./autogen.sh && ./configure && make rpm
+RUN cp $(find .rpmbuild/RPMS -name "*\.rpm") /opt/built
+RUN dnf -y install /opt/built/*
+
+RUN dnf clean all
+
+RUN echo 'complete'
+
